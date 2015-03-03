@@ -1,0 +1,40 @@
+#!/usr/bin/env ruby
+
+require 'pstore'
+require 'active_support/all'
+require 'thor'
+
+book = Struct.new('Book', :title, :price)
+
+class PStore
+  def to_json
+    transaction do
+      dump = roots.map do |key|
+        {key => self[key]}
+      end
+      dump.to_json
+    end
+  end
+end
+
+class PStoreCommand < Thor
+  desc 'json DBFILE', <<-HELP.strip_heredoc
+    PStore データベースの内容をJSON形式で出力します。
+
+    例:
+      test/books.rb にて定義されたクラスのデータを
+      データベース /tmp/books から読み出す場合
+
+      ./pstore json /tmp/books --require test/book.rb
+  HELP
+  option :require, type: :string, desc: 'required script before read database'
+  def json(dbfile)
+    options[:require].split(',').each do |file|
+      require_relative file
+    end
+    puts PStore.new(dbfile).to_json
+  end
+  default_task :help
+end
+
+PStoreCommand.start(ARGV)

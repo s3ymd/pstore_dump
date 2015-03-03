@@ -13,7 +13,7 @@ PStore データベースの内容をJSON形式で出力します。
 
 # 実行例
 
-test/books.rb にて定義されたクラスのデータを含む
+test/book.rb にて定義されたクラスのデータを含む
 データベース /tmp/books を読み取り、結果をJSON形式で出力。
 
 ```bash

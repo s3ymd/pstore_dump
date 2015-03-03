@@ -20,7 +20,7 @@ class PStoreCommand < Thor
     PStore データベースの内容をJSON形式で出力します。
 
     例:
-      test/books.rb にて定義されたクラスのデータを
+      test/book.rb にて定義されたクラスのデータを
       データベース /tmp/books から読み出す場合
 
       ./pstore json /tmp/books --require test/book.rb

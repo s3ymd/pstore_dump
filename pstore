@@ -4,8 +4,6 @@ require 'pstore'
 require 'active_support/all'
 require 'thor'
 
-book = Struct.new('Book', :title, :price)
-
 class PStore
   def to_json
     transaction do
@@ -29,8 +27,10 @@ class PStoreCommand < Thor
   HELP
   option :require, type: :string, desc: 'required script before read database'
   def json(dbfile)
-    options[:require].split(',').each do |file|
-      require_relative file
+    if options[:require]
+      options[:require].split(',').each do |file|
+        require_relative file
+      end
     end
     puts PStore.new(dbfile).to_json
   end
